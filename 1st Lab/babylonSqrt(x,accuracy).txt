@@ -1,0 +1,10 @@
+def babylonSqrt(x,accuracy):
+	import math
+	x_sqrt = math.sqrt(x)
+	guess = x/2
+	while (abs(x_sqrt - guess)/x_sqrt > accuracy):
+		q = x/guess
+		guess = (q + guess)/2
+	return guess
+
+>>> print (babylonSqrt(100,0.0001))

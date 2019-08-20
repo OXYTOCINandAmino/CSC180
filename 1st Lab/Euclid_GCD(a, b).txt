@@ -1,0 +1,12 @@
+def Euclid_GCD(a, b):
+	sm = min(a, b)
+	bi = max(a, b)
+	r = bi%sm
+	rr = sm
+	while (r != 0):
+		rrr = r
+		r = rr%r
+		rr = rrr
+	return rr
+
+>>> print(Euclid_GCD(100, 15))

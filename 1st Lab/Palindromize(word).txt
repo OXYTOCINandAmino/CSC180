@@ -1,0 +1,10 @@
+def Palindromize(word):
+	word_1 = ''
+	for i in range(len(word)-2, -1, -1):
+		word_1 = word_1 + word[i]
+	for i in range(0, len(word_1), 1):
+		word = word + word_1[i]
+	return word
+
+>>> word = 'abcd'
+>>> print(Palindromize(word))

@@ -1,0 +1,167 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+   /* SOME NOTES:
+      0a. The "scope" of a variable is the nearest enclosing { }
+          block. The "scope" of the variable means the zone within
+          with that variable can be referred to, and C will know
+          what variable you are talking about.
+      0b. All { } within the scope of your variable have access to that
+          variable.
+      0c. All { } outside of the scope of your variable DO NOT have access
+          to your variable. This should make sense to you.
+      0d. One should always define variables WITHIN { }.
+          If a variable is defined outside of a { } that means you have
+          defined a GLOBAL VARIABLE which is most often a BAD IDEA.
+          For this course, the use of GLOBAL VARIABLES will earn you a 
+          zero on marked content.
+      0e. You may redefine a new variable WITH THE SAME NAME within a { }
+          that is within your scope. This such an incredibly stupid idea
+          with no redeeming merit. Variables should be named properly, and
+          one should not play games with a langauge, exploiting features
+          that other programmers may not immediately know of.
+          This is bad engineering and will also earn you a zero if you
+          do it on marked content.
+    */
+          
+
+int main(void) {
+   int x      = 0;     /* always initialize your variables */
+   int *px    = NULL;
+
+   int *y     = NULL;
+
+   /* 1. if I define a variable, then within the scope of that variable I 
+         may:
+         * READ that variable's value by simply referring to the variable name
+         * MODIFY that variable's value by simply referring to the variable name
+                  on the LHS (left-hand side) of an "=" assignment
+         So:
+   */
+   x = 100000;             /* this MODIFY's the value of x */
+   printf("1a. x is %d\n",x);  /* this READs the value of x and prints it */
+
+   /* 2. if I define a POINTER variable, then I may do one of two things with it:
+         * set it to the address of another variable
+         * allocate space (via malloc) and set the pointer to point to that space
+   */
+
+   /* 2a. Here we show how to set a pointer var to the adx of another var */
+   px = &x; /* Note a few things:
+                   a. my excellent naming of variables: "px" -- ptr to x
+                   b. LHS is an address var, RHS uses the "address of" op */
+   /* Now, px becomes a variable that acts as a "reference" to x because px
+      is equal to the address of x. Thus, *px becomes an alias for x, and I 
+      can treat it exactly as the variable x; all actions will occur as if I
+      was referring to x itself. */
+   printf("2a. BEFORE;   x is %d\n",x);
+   printf("2a. BEFORE; *px is %d\n",*px);
+   *px = -1;
+   printf("2a. AFTER;   x is %d\n",x);
+   printf("2a. AFTER; *px is %d\n",*px);
+
+   /* 2b. Here we remind you of how to allocate space and set a pointer to
+          point to that space. */
+   y = (int *) malloc(sizeof(int)*10);
+   /* above, we have allocated space for 10 ints. You should see from the
+      statement above what parts correspond to the "int" and the "10".
+
+      With zero knowledge for why the above works, you can still
+      modify the above statement to allocate any amount of
+      space (by changing the "10") and for any kind of variable 
+      (by changing the "int").
+   */
+
+   /* So far we have spoken about reading or modifying variables
+      WITHIN the scope of the variable's definition. That can be seen
+      because all code was within the { } where the var was defined.
+
+      But how do we read or modify a variable via calling a function?
+
+      First, if we have a function f that will READ a variable, it can
+      be defined:
+      int f(int blah,...) { ... }
+
+      If you now call f within the scope of a variable (say "x" in our 
+      code above), you can simply do "f(x,...)" and f will get the
+      value of x --- it will be able to READ x.
+
+      Second, if we want a function g to be able to MODIFY a variable,
+      it must take the ADDRESS of that variable, as opposed to the
+      variable itself. Hence it must be def'd:
+      int g(int *blah,...) { ... }
+
+      If you call g within the scope of our "x" variable, you must call
+      it via "g(&x,...)". With g, you may now write to the argument via:
+      *blah = <new value>. When you pass in &x, "blah" gets the value "&x"
+      and hence *blah will actually change the value at &x.
+
+      SUMMARY:
+         * a function can READ a variable's value directly by refering to the
+           variable name
+         * a function can MODIFY a var's value only when it is passed the ADDRESS
+           of the variable
+   */
+
+   /* Now, what about pointers (addresses)? How do I pass in a pointer var to 
+      a function so that my function can MODIFY the pointer?
+ 
+      First, recall the discussion about that mentions the two kinds of mods
+      to a pointer var are either:
+      * setting the pointer to point to a var
+      * allocating space and pointing to that space
+
+      The former only really makes sense within the scope of the pointer, so
+      we'll ignore it, and consider only the allocation case.
+
+      So again: how can we allocate space in a function and set a pointer
+      to point to that space.
+
+      Two ways:
+
+      1. int *h1(int size) {
+            if (size > 1) {
+               return (int *)malloc(sizeof(int)*size);
+            } else {
+               printf("ERROR!\n");
+               return NULL;
+            }
+         }
+         That is, we define the function to RETURN the address of the malloc'd
+         space. Then we can assign it to a pointer var:
+         int main(void) {
+             int *z;
+             ...
+             z = h1(100000);
+             ...
+         }
+         z will now point to a big array
+      2. By passing in the ADDRESS of a pointer, we may allocate to the pointer
+         directly in the function:
+         
+         int h2(int **pp,int size) {
+            if (pp == NULL) {
+                printf("ERROR!\n");
+                return -1;
+            }
+            if (size <= 0) {
+                printf("ERROR!\n");
+                return -1;
+            }
+            (*pp) = (int *) malloc(sizeof(int) * size);
+            return 0;
+         }
+
+         So we send in the address of an (int *), which is defined as "int **"
+         and then set the VALUE AT the "int *" (i.e., *pp) to be the return
+         val of a malloc. Usage:
+         int main(void) {
+             int *z = NULL;
+             int r  = 0;
+             ...
+             r = h2( &z, 100000);
+             ...
+         }
+         z will now point to a big array
+    */
+}

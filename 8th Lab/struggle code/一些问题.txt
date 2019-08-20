@@ -1,0 +1,24 @@
+Q1
+struct llnode {            /* since the llnode is a self-referential structure */
+   int val;                /* we can not compile the struct and typedef decl into one */
+   struct llnode *next;   【这个是啥，请解释llnode *next为什么一个struct里面会套一个自己的address】   
+};
+typedef struct llnode llnode;
+
+Q2
+int ll_add_to_head( llnode **head, int val) {
+   if (head == NULL) {
+      return -1;
+   }
+   if (*head == NULL) {
+      *head = ( llnode *) malloc(sizeof( llnode));
+      (*head) -> val = val;
+      (*head) -> next = NULL;【这个有啥意义吗？】
+      return 0;
+   } else { /* recursively call ll_add_to_tail until we get to the tail
+					which is the point where the pointer is NULL */
+      return ll_add_to_tail(&((*head)->next), val); 【这传入的是个啥？有啥用啊】
+   }
+}
+
+Q3 先把前面的理解了再说

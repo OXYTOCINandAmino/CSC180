@@ -1,0 +1,113 @@
+/* PROTOTYPES */
+#include <stdio.h>
+#include <stdlib.h>
+
+/* this is how one can define structs */
+struct vector2 {
+   float x;
+   float y;
+   char label;
+};
+
+/* this is how to define a struct and then typedef it */
+struct vector3 {
+   float x;
+   float y;
+   float z;
+   char label;
+};
+typedef struct vector3 vector3; /* you can reuse the name vector3 */
+typedef struct vector3 vec3;    /* or you can give it a totally new name */
+
+/* this is how to combine a "typedef" and a struct def
+ * in a single statement which is probably the dominant usage */
+typedef struct {
+   float real;
+   float imag;
+} complex_t;
+
+/* FUNCTIONS */
+
+int main(void) {
+   int i;
+
+   /* u,v,w,a are VARIABLES
+    * which means that C allocates them and you can start to use
+    * them (assign values to them, read their values, etc) */
+   struct vector2 u;
+   vector3        v;
+   vec3           w;
+   complex_t      a;
+
+   /* pu,pv,pw,pa are POINTERS (addresses)
+    * which means they are initally pointing to UNALLOCATED
+    * locations --- hence they CANNOT be used until you either
+    * (a) malloc them, or (b) set them as addresses of VARIABLES */
+   struct vector2 *pu;
+   vector3        *pv;
+   vec3           *pw;
+   complex_t      *pa;
+
+
+   /* let's first assign to the variables */
+   u.x = 0.5;
+   u.y = 0.2;
+   u.label = 'a';
+
+   v.x = 0.9;
+   v.y = 0.7;
+   v.z = 0.6;
+   v.label = 'b';
+
+   w.x = 0.9;
+   w.y = 0.7;
+   w.z = 0.6;
+   w.label = 'b';
+
+   a.real = 0.25;
+   a.imag = -0.75;
+
+   /* now, for the POINTERS we can either (a) malloc them or (b) set them as
+    * addresses of existing allocated variables */
+   /* (a-1) this creates an array of 3 (struct vector2) */
+   pu = (struct vector2 *)malloc(sizeof(struct vector2) * 3);
+   /* and now we can assign to them via */
+   for (i=0; i<3; i=i+1) {
+      (pu[i]).x = i*0.9;
+      (pu[i]).y = -i*0.9;
+      (pu[i]).label = 'c';
+   }
+
+   /* (a-2) this creates a single vector3 */
+   pv = (vector3 *)malloc(sizeof(vector3) * 1);
+   /* and now we can assign to them via */
+   (*pv).x = -0.1;
+   (*pv).y = -0.2;
+   (*pv).z = -0.4;
+   (*pv).label = 'd';
+   /* or use the shorthand */
+   pv->x = -0.1;
+   pv->y = -0.2;
+   pv->z = -0.4;
+   pv->label = 'd';
+
+   /* (b-1) this sets pw to POINT to w */
+   pw = &w;
+   /* this means that if we print pw's values we'll see w's values */
+   printf("pw->x = %f\npw->y = %f\npw->z = %f\npw->label = %c\n",
+          pw->x,pw->y,pw->z,pw->label);
+
+   /* (b-2) this sets pa to POINT to a */
+   pa = &a;
+   /* another thing we can do is MODIFY the contents of pa ... which will cause
+    * a's values to change too because pa POINTS to a (and thus is an alias for a) */
+   printf("BEFORE changing pa: a.real = %8f  a.imag = %8f\n",a.real,a.imag);
+   pa->real = -0.999;
+   pa->imag = -0.888;
+   printf("AFTER  changing pa: a.real = %8f  a.imag = %8f\n",a.real,a.imag);
+
+   free(pv); /* DON'T FORGET TO FREE */
+   free(pu);
+   return 0;
+
+}

@@ -1,0 +1,197 @@
+>>> List=[0,1,2,3,4,5,6,7,8]
+>>> List2=[0,0,0,0,0,0,0,0,0]
+>>> def printBoard():
+	print(List[0],'|',List[1],'|',List[2])
+	print('---------')
+	print(List[3],'|',List[4],'|',List[5])
+	print('---------')
+	print(List[6],'|',List[7],'|',List[8])
+
+>>> def analyzeBoard():
+	print(List2[0],'|',List2[1],'|',List2[2])
+	print('---------')
+	print(List2[3],'|',List2[4],'|',List2[5])
+	print('---------')
+	print(List2[6],'|',List2[7],'|',List2[8])
+
+
+>>>#who is wining
+>>> def Who_is_wining():
+	if(List2[0]==List2[1]==List2[2]==1)or(List2[3]==List2[4]==List2[5]==1)or(List2[6]==List2[7]==List2[8]==1)or(List2[0]==List2[3]==List2[6]==1)or(List2[1]==List2[4]==List2[7]==1)or(List2[2]==List2[5]==List2[8]==1)or(List2[0]==List2[4]==List2[8]==1)or(List2[6]==List2[4]==List2[2]==1):
+		return('X win')
+	if(List2[0]==List2[1]==List2[2]==2)or(List2[3]==List2[4]==List2[5]==2)or(List2[6]==List2[7]==List2[8]==2)or(List2[0]==List2[3]==List2[6]==2)or(List2[1]==List2[4]==List2[7]==2)or(List2[2]==List2[5]==List2[8]==2)or(List2[0]==List2[4]==List2[8]==2)or(List2[6]==List2[4]==List2[2]==2):
+		return('O win')
+
+ 
+>>>#Random choose position of O
+def genRandomMove(List):
+     while True:
+      O_move=randint(0,8)
+      if(List[int(O_move)]!='x')and(List[int(O_move)]!='o'):
+          return(O_move)
+      break
+>>>List[genRandomMove(List)]='o'
+>>>List2[genRandomMove(List)]=2
+
+
+
+>>># O to take wining move
+>>> def genWiningMove(List2):
+	if((List2[0]==List2[1]==2)and(List2[2]==0)):
+		return(2)
+	if((List2[0]==List2[2]==2)and(List2[1]==0)):
+		return(1)
+	if((List2[1]==List2[2]==2)and(List2[0]==0)):
+		return(0)
+	if((List2[3]==List2[4]==2)and(List2[5]==0)):
+		return(5)
+	if((List2[3]==List2[5]==2)and(List2[4]==0)):
+		return(4)
+	if((List2[4]==List2[5]==2)and(List2[3]==0)):
+		return(3)
+	if((List2[6]==List2[7]==2)and(List2[8]==0)):
+		return(8)
+	if((List2[6]==List2[8]==2)and(List2[7]==0)):
+		return(7)
+	if((List2[7]==List2[8]==2)and(List2[6]==0)):
+		return(6)
+	if((List2[0]==List2[3]==2)and(List2[6]==0)):
+		return(6)
+	if((List2[0]==List2[6]==2)and(List2[3]==0)):
+		return(3)
+	if((List2[6]==List2[3]==2)and(List2[0]==0)):
+		return(0)
+	if((List2[1]==List2[4]==2)and(List2[7]==0)):
+		return(7)
+	if((List2[1]==List2[7]==2)and(List2[4]==0)):
+		return(4)
+	if((List2[4]==List2[7]==2)and(List2[1]==0)):
+		return(1)
+	if((List2[2]==List2[5]==2)and(List2[8]==0)):
+		return(8)
+	if((List2[2]==List2[8]==2)and(List2[5]==0)):
+		return(5)
+	if((List2[5]==List2[8]==2)and(List2[2]==0)):
+		return(2)
+	if((List2[0]==List2[4]==2)and(List2[8]==0)):
+		return(8)
+	if((List2[0]==List2[8]==2)and(List2[4]==0)):
+		return(4)
+	if((List2[4]==List2[8]==2)and(List2[0]==0)):
+		return(0)
+	if((List2[6]==List2[4]==2)and(List2[2]==0)):
+		return(2)
+	if((List2[6]==List2[2]==2)and(List2[4]==0)):
+		return(4)
+	if((List2[4]==List2[2]==2)and(List2[6]==0)):
+		return(6)
+>>>List[genWiningMove(List2)]='o'
+>>>List2[genWiningMove(List2)]=2
+
+>>>#take non losing move
+>>> def genNonLoserMove(List2):
+	if((List2[0]==List2[1]==1)and(List2[2]==0)):
+		return(2)
+	if((List2[0]==List2[2]==1)and(List2[1]==0)):
+		return(1)
+	if((List2[1]==List2[2]==1)and(List2[0]==0)):
+		return(0)
+	if((List2[3]==List2[4]==1)and(List2[5]==0)):
+		return(5)
+	if((List2[3]==List2[5]==1)and(List2[4]==0)):
+		return(4)
+	if((List2[4]==List2[5]==1)and(List2[3]==0)):
+		return(3)
+	if((List2[6]==List2[7]==1)and(List2[8]==0)):
+		return(8)
+	if((List2[6]==List2[8]==1)and(List2[7]==0)):
+		return(7)
+	if((List2[7]==List2[8]==1)and(List2[6]==0)):
+		return(6)
+	if((List2[0]==List2[3]==1)and(List2[6]==0)):
+		return(6)
+	if((List2[0]==List2[6]==1)and(List2[3]==0)):
+		return(3)
+	if((List2[6]==List2[3]==1)and(List2[0]==0)):
+		return(0)
+	if((List2[1]==List2[4]==1)and(List2[7]==0)):
+		return(7)
+	if((List2[1]==List2[7]==1)and(List2[4]==0)):
+		return(4)
+	if((List2[4]==List2[7]==1)and(List2[1]==0)):
+		return(1)
+	if((List2[2]==List2[5]==1)and(List2[8]==0)):
+		return(8)
+	if((List2[2]==List2[8]==1)and(List2[5]==0)):
+		return(5)
+	if((List2[5]==List2[8]==1)and(List2[2]==0)):
+		return(2)
+	if((List2[0]==List2[4]==1)and(List2[8]==0)):
+		return(8)
+	if((List2[0]==List2[8]==1)and(List2[4]==0)):
+		return(4)
+	if((List2[4]==List2[8]==1)and(List2[0]==0)):
+		return(0)
+	if((List2[6]==List2[4]==1)and(List2[2]==0)):
+		return(2)
+	if((List2[6]==List2[2]==1)and(List2[4]==0)):
+		return(4)
+	if((List2[4]==List2[2]==1)and(List2[6]==0)):
+		return(6)
+>>>List[genWiningMove(List2)]='o'
+>>>List2[genWiningMove(List2)]=2
+
+
+
+
+>>> #let human choose position of X
+>>> while True:
+	 X_move=input("choose a integer from 0 to 8:")
+	 if(float(X_move)==int(float(X_move)))and(0<=int(X_move)<=8):
+		if(List[int(X_move)]!='x')and(List[int(X_move)]!='o'):
+		 List[int(X_move)]='x'
+		 List2[int(X_move)]=1
+		 break
+	 else:
+		print("choose again")
+
+
+>>> #let computor play randomly choose position of O
+>>> from random import randint
+>>> while True:
+	 O_move=randint(0,8)
+	 if(List[int(O_move)]!='x')and(List[int(O_move)]!='o'):
+		 List[int(O_move)]='o'
+		 List2[int(O_move)]=2
+		 break
+
+>>>#Game when Human VS random move
+
+ while True:
+       print(genBoard())
+       #human player X
+       while True:
+        X_move=input("choose a integer from 0 to 8:")
+        if(float(X_move)==int(float(X_move)))and(0<=int(X_move)<=8):
+           if(List[int(X_move)]!='x')and(List[int(X_move)]!='o'):
+            List[int(X_move)]='x'
+            List2[int(X_move)]=1
+            break
+        else:
+           print("choose again")
+       #random move player O
+       from random import randint
+       while True:
+        O_move=randint(0,8)
+        if(List[int(O_move)]!='x')and(List[int(O_move)]!='o'):
+           List[int(O_move)]='o'
+           List2[int(O_move)]=2
+           break
+       if(Who_is_wining()=='X win'):
+           print('X Win')
+           break
+>>>
+
+
+
+

@@ -1,0 +1,254 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "ll.h"
+
+
+
+int ll_add_to_head(llnode **head, int val) {
+	llnode *old_head;
+	if (head == NULL) {
+		return -1;
+	}
+	old_head = *head;
+
+	*head = (llnode *)malloc(sizeof(llnode));
+	(*head)->val = val;
+	(*head)->prev = NULL;
+	(*head)->next = old_head;
+	if (old_head != NULL)
+		old_head->prev = (*head);
+	return 0;
+}
+
+int ll_add_to_tail(llnode **head, int val) {
+	llnode *new_node;
+	llnode *cur_node;
+	if (head == NULL) {
+		return -1;
+	}
+
+	if ((*head) == NULL) {
+		new_node = (llnode *)malloc(sizeof(llnode));
+		new_node->val = val;
+		new_node->prev = NULL;
+		new_node->next = NULL;
+		(*head) = new_node;
+		return 0;
+	}
+
+	cur_node = (*head);
+	while (cur_node->next != NULL)
+	{
+		cur_node = cur_node->next;
+	}
+
+	new_node = (llnode *)malloc(sizeof(llnode));
+	new_node->val = val;
+	new_node->prev = cur_node;
+	cur_node->next = new_node;
+	new_node->next = NULL;
+	return 0;
+}
+
+int ll_print(llnode *p) {
+	if (p == NULL) {
+		return 0;
+	}
+	else {
+		printf("val = %d\n", p->val);
+		return ll_print(p->next);
+	}
+}
+
+int ll_free(llnode *p) {
+	if (p == NULL) {
+		return -1;
+	}
+	else {
+		llnode *f = p->next;
+		free(p);
+		return ll_free(f);
+	}
+}
+
+int ll_find_by_value(llnode *pList, int val) {
+	if (pList == NULL) {
+		return -1;
+	}
+	if (pList->val == val)
+		return 0;
+	return ll_find_by_value(pList->next, val);
+}
+
+int ll_del_from_tail(llnode **ppList) {
+	llnode *cur_node;
+	if (ppList == NULL)
+		return -1;
+
+	if ((*ppList)->next == NULL) {
+		cur_node = (*ppList);
+		(*ppList) = NULL;
+		free(cur_node);
+		cur_node = NULL;
+		return 0;
+	}
+
+	cur_node = (*ppList);
+	while (cur_node->next != NULL)
+	{
+		cur_node = cur_node->next;
+	}
+
+	cur_node->prev->next = NULL;
+	free(cur_node);
+	cur_node = NULL;
+	return 0;
+}
+
+int ll_del_from_head(llnode **ppList) {
+	llnode *first_node;
+	if (ppList == NULL){
+		return -1;}
+        if ((*ppList)!=NULL){
+	first_node = (*ppList);
+	(*ppList) = first_node->next;
+	free(first_node);
+	(*ppList)->prev = NULL;
+	}
+	return 0;
+}
+
+int ll_del_by_value(llnode **ppList, int val) {
+	llnode *cur_node;
+	llnode *per_node;
+	if (ppList == NULL)
+		return -1;
+
+	cur_node = *ppList;
+	if (cur_node->val == val) {
+		if (cur_node->next == NULL) {
+			(*ppList) = NULL;
+			free(cur_node);
+			cur_node = NULL;
+			return 0;
+		}
+		else
+		{
+			(*ppList) = cur_node->next;
+			(*ppList)->prev = NULL;
+			free(cur_node);
+			cur_node = NULL;
+			return 0;
+		}
+	}
+
+	per_node = *ppList;
+	cur_node = (*ppList)->next;
+	while (cur_node != NULL)
+	{
+		if (cur_node->val == val) {
+			per_node->next = cur_node->next;
+			free(cur_node);
+			cur_node = per_node->next;
+			if (cur_node != NULL)
+				cur_node->prev = per_node;
+		}
+		if (cur_node != NULL) {
+			per_node = cur_node;
+			cur_node = cur_node->next;
+		}
+	}
+	return 0;
+}
+int ll_insert_in_order(llnode **ppList, int val) {
+	llnode *cur_node;
+	llnode *pre_node;
+	llnode *new_node;
+	if (ppList == NULL) {
+		return -1;
+	}
+	if (*ppList == NULL) {
+		*ppList = (llnode *)malloc(sizeof(llnode));
+		(*ppList)->val = val;
+		(*ppList)->prev = NULL;
+		(*ppList)->next = NULL;
+		return 0;
+	}
+
+	cur_node = *ppList;
+	pre_node = *ppList;
+	while (cur_node != NULL && val >= cur_node->val) {
+		pre_node = cur_node;
+		cur_node = cur_node->next;
+	}
+
+	if (cur_node == NULL) {
+		cur_node = (llnode *)malloc(sizeof(llnode));
+		cur_node->val = val;
+		cur_node->prev = pre_node;
+		cur_node->next = NULL;
+
+		pre_node->next = cur_node;
+	}
+	else {
+		new_node = (llnode *)malloc(sizeof(llnode));
+		new_node->val = val;
+		if (cur_node != (*ppList)) {
+			new_node->prev = pre_node;
+			new_node->next = cur_node;
+			pre_node->next = new_node;
+			cur_node->prev = new_node;
+		}
+		else
+		{
+			new_node->prev = NULL;
+			new_node->next = cur_node;
+			cur_node->prev = new_node;
+			(*ppList) = new_node;
+		}
+	}
+	return 0;
+}
+
+int ll_concat(llnode **pSrcA, llnode **pSrcB) {
+	llnode *cur_node;
+	if (pSrcA == NULL && pSrcB == NULL)
+		return -1;
+	if (*pSrcA == NULL) {
+		*pSrcA = *pSrcB;
+		return 0;
+	}
+	if (*pSrcB == NULL)
+		return 0;
+	cur_node = *pSrcA;
+	while (cur_node->next != NULL)
+	{
+		cur_node = cur_node->next;
+	}
+	cur_node->next = *pSrcB;
+	(*pSrcB)->prev = cur_node;
+	return 0;
+}
+
+int ll_sort(llnode **ppList) {
+	llnode *sort_node;
+	llnode *cur_node;
+	int cur_val;
+	if (ppList == NULL)
+		return -1;
+
+	sort_node = *ppList;
+	while (sort_node != NULL) {
+		cur_val = sort_node->val;
+		cur_node = sort_node->next;
+		while (cur_node != NULL) {
+			if (cur_node->val < cur_val) {
+				cur_val = cur_node->val;
+				cur_node->val = sort_node->val;
+				sort_node->val = cur_val;
+			}
+		}
+		sort_node = sort_node->next;
+	}
+	return 0;
+}

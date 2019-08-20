@@ -1,0 +1,21 @@
+%莱布尼兹派
+def LeibnizPi(n):
+	a = 0
+	for i in range(0, n+1):
+		b = 1/(2*i + 1)
+		if i%2 == 0:
+			a = a + b
+		else:
+			a = a - b
+	return 4*a
+
+>>>print (LeibnizPi(90000000))
+
+%使用while循环得n
+>>> pi = 3.14159265
+>>> n = 1
+>>> while (abs(LeibnizPi(n) - pi)/pi > 0.01):
+	n = n + 1
+
+	
+>>> print (n) %n为31

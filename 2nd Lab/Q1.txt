@@ -1,0 +1,38 @@
+# for genWinningMove(T,player)
+# there should be input of T=[......]
+# and there should be input of player 
+  eg. player=1
+  which means in this case the player is X
+  so the goal of this function is  to make X win
+  is that right?
+
+# if the above is right
+  there should be 2 cases in the function
+  genWinningMove(T,player):
+  ....
+  if(player=1):
+     if(T[0]==T[1]==1)and(T[2]==0):
+         return(2)
+         .......
+  if(player=2):
+     if(T[0==T[1]==2)and(T[2]==0):
+         return(2)
+          ......
+
+# is that the right logic?
+
+
+#for Non Loser Move The logic is similiar:
+ there should be 2 cases in the function
+  
+genNonLoserMove(T,player):
+  ....
+  if(player=1):
+     if(T[0]==T[1]==2)and(T[2]==0):
+         return(2)
+         .......
+  if(player=2):
+     if(T[0==T[1]==1)and(T[2]==0):
+         return(2)
+          ......
+# is that the right logic?
